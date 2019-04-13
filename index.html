@@ -5,10 +5,11 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
+     
       #map {
         height: 100%;
+        width: 100%;
+        ;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -18,34 +19,115 @@
       }
     </style>
   </head>
-  <body>
-        <div class="container">
-                             
-                <form>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput">Nombre</label>
-                          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Activar ubicacion</label>
-                          <input type="radio" class="form-control" id="formGroupExampleInput2" placeholder="mi ubicacion" id="map">
-                        </div>
-                        <div class="form-group">
-                            <input type="button" value="Envar ubicacion" id="btn-api">
-                        </div>
-                      </form>
-                </div>
+  <body>               
+          <button onclick="getLocation()">localizar</button>
+                
+            <p id="demo"></p>   
+            <script>
+              
+              var x = document.getElementById("demo");
+                
+              function getLocation() {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(showPosition);
+                } else { 
+                  x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+              }
+              
+              function showPosition(position) {
+                x.innerHTML = "Latitude: " + position.coords.latitude + 
+                "<br>Longitude: " + position.coords.longitude;
+              }
 
+                                       
+           </script>         
+               
+                
     <div id="map"></div>   
-<script>
-        var map;
-        function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-            center:  datos,
-            zoom: 8
-          });
-        }
-    </script>
+ 
+    <script>
+     
+      function initMap(){
+        var options = {
+            zoom:8,
+            center:{lat:coords.longitude,lng:coords,latitude},
+          } 
+    
+    var map = new google.maps.Map(document.getElementById('map'), options);
+
+            // Listen for click on map
+            google.maps.event.addListener(map, 'click', function(event){
+              // Add marker
+              addMarker({coords:event.latLng});
+            });
+      
+            
+            // Add marker
+            var marker = new google.maps.Marker({
+              center:{lat:position.longitude,lng:position.latitude},
+              map:map,
+              icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            });
+      
+            var infoWindow = new google.maps.InfoWindow({
+              content:'<h1>Lynn MA</h1>'
+            });
+      
+            marker.addListener('click', function(){
+              infoWindow.open(map, marker);
+            });
+        
+      /*
+            // Array of markers
+            var markers = [
+              {
+                coords:{lat:42.4668,lng:-70.9495},
+                iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                content:'<h1>Lynn MA</h1>'
+              },
+              {
+                coords:{lat:42.8584,lng:-70.9300},
+                content:'<h1>Amesbury MA</h1>'
+              },
+              {
+                coords:{lat:42.7762,lng:-71.0773}
+              }
+            ];
+      
+            // Loop through markers
+            for(var i = 0;i < markers.length;i++){
+              // Add marker
+              addMarker(markers[i]);
+            }
+      
+            // Add Marker Function
+            function addMarker(props){
+              var marker = new google.maps.Marker({
+                position:props.coords,
+                map:map,
+                //icon:props.iconImage
+              });
+      
+              // Check for customicon
+              if(props.iconImage){
+                // Set icon image
+                marker.setIcon(props.iconImage);
+              }
+      
+              // Check content
+              if(props.content){
+                var infoWindow = new google.maps.InfoWindow({
+                  content:props.content
+                });
+      
+                marker.addListener('click', function(){
+                  infoWindow.open(map, marker);
+                });
+              }*/
+            }
+          </script>
+    
    
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgUaodAfVmLgxUTC4seG4xKTnJMrj_-0g&callback=initMap"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
